@@ -25,7 +25,6 @@ jobs:
             docker ps  # Check if the container is running
             curl -f http://flask-container:5000 || exit 1
 
-
 workflows:
   version: 2
   build_and_test:
