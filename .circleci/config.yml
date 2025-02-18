@@ -21,13 +21,13 @@ jobs:
       # Build the Docker image
       - run:
           name: Build Docker image
-          command: docker build -t flask-hello-world .
+          command: docker build -t circleci .
 
       # Run tests inside the container
       - run:
           name: Test Docker container
           command: |
-            docker run -d -p 5000:5000 flask-hello-world
+            docker run -d -p 5000:5000 circleci
             sleep 5
             curl -f http://localhost:5000 || exit 1
 
