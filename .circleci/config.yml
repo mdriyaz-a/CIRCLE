@@ -6,7 +6,7 @@ jobs:
       - image: cimg/python:3.9  # Use CircleCI's Python image
     steps:
       - checkout
-      - setup_remote_docker  # Fixed line
+      - setup_remote_docker
       - run:
           name: Install dependencies
           command: |
@@ -23,8 +23,13 @@ jobs:
             docker run --name flask-container --network flask-network -d -p 5000:5000 my-flask-app
             sleep 5
             docker ps  # Check if the container is running
-            curl -f http://flask-container:5000 || exit 1
-
+            
+            # Get the container's IP address
+            CONTAINER_IP=$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' flask-container)
+            echo "Container IP: $CONTAINER_IP"
+            
+            # Test using the IP address
+            curl -f http://$CONTAINER_IP:5000 || exit 1
 workflows:
   version: 2
   build_and_test:
